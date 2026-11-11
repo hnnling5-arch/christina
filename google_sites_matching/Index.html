@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>三人随机匹配系统 - 校园艺术展</title>
+  <!-- 选用适合儿童的柔和字型 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@500;700;900&family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cream: #FFF5E5;
+      --navy: #263D64;
+      --yellow: #F4C66A;
+      --coral: #F28C75;
+      --mint: #8CBF9E;
+      --card-bg: #FFFFFF;
+      --border: rgba(38, 61, 100, 0.15);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans SC', 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      background-image: radial-gradient(#F4C66A 0.6px, transparent 0.6px), radial-gradient(#8CBF9E 0.6px, var(--bg-cream) 0.6px);
+      background-size: 24px 24px;
+      background-position: 0 0, 12px 12px;
+      color: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      background: var(--card-bg);
+      border: 3px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 32px rgba(38, 61, 100, 0.08);
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 顶部标题区 */
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .badge-sub {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFF0D4;
+      color: #9C5800;
+      font-size: 13px;
+      font-weight: 900;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .header h1 {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: rgba(38, 61, 100, 0.7);
+      margin-top: 4px;
+      font-weight: 700;
+    }
+
+    /* 卡片通用样式 */
+    .screen {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out forwards;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 表单输入区 */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: var(--navy);
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      height: 52px;
+      padding: 0 16px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      background: #FFFDF9;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--yellow);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 4px rgba(244, 198, 106, 0.25);
+    }
+
+    /* 快捷昵称推荐胶囊 */
+    .pills-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(38, 61, 100, 0.6);
+      margin-top: 8px;
+      margin-bottom: 6px;
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .pill-btn {
+      background: #FFF5E5;
+      border: 1px solid rgba(244, 198, 106, 0.8);
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .pill-btn:hover {
+      background: var(--yellow);
+      transform: scale(1.03);
+    }
+
+    /* 主按键 */
+    .btn-primary {
+      width: 100%;
+      height: 56px;
+      background: var(--navy);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 18px;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 6px 16px rgba(38, 61, 100, 0.2);
+      transition: all 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn-primary:hover {
+      background: #1B2C49;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(38, 61, 100, 0.25);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      height: 48px;
+      background: transparent;
+      color: var(--coral);
+      border: 2px dashed rgba(242, 140, 117, 0.5);
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover {
+      background: #FFF2EF;
+      border-color: var(--coral);
+    }
+
+    /* 等待搜寻屏幕 (CASPER 设计) */
+    .waiting-box {
+      text-align: center;
+      padding: 16px 0;
+    }
+
+    .radar-circle {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+      background: #FFF0D4;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      position: relative;
+    }
+
+    .radar-circle::before, .radar-circle::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 50%;
+      border: 2px solid var(--yellow);
+      animation: pulse 2s linear infinite;
+    }
+
+    .radar-circle::after {
+      animation-delay: 1s;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* 30 秒倒计时条 */
+    .timer-wrap {
+      max-width: 320px;
+      margin: 0 auto 16px;
+    }
+
+    .timer-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 6px;
+      color: var(--navy);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 12px;
+      background: #EAEFF7;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(38, 61, 100, 0.1);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--mint), var(--yellow));
+      border-radius: 999px;
+      transition: width 1s linear;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #EBF5EF;
+      color: #2F6F47;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .waiting-tip {
+      font-size: 12px;
+      color: rgba(38, 61, 100, 0.6);
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    /* 匹配成功屏幕 */
+    .success-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .team-badge {
+      display: inline-block;
+      background: var(--mint);
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 4px 12px;
+      border-radius: 12px;
+      margin-bottom: 6px;
+    }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 540px) {
+      .members-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .member-card {
+      background: #FFFDF9;
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 16px 12px;
+      text-align: center;
+      position: relative;
+      transition: transform 0.2s;
+    }
+
+    .member-card.is-ai {
+      border-color: #C3E0CE;
+      background: #F8FCF9;
+    }
+
+    .member-card.is-me {
+      border-color: var(--yellow);
+      background: #FFFDF4;
+      box-shadow: 0 4px 12px rgba(244, 198, 106, 0.2);
+    }
+
+    .type-tag {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .tag-human {
+      background: #E8F0FE;
+      color: #1967D2;
+    }
+
+    .tag-ai {
+      background: #E6F4EA;
+      color: #137333;
+    }
+
+    .tag-me {
+      background: var(--yellow);
+      color: var(--navy);
+    }
+
+    .member-avatar {
+      width: 56px;
+      height: 56px;
+      margin: 4px auto 8px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .member-name {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--navy);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .member-role {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      background: #FFF0D4;
+      color: #8C4D00;
+      padding: 2px 10px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .ai-bubble {
+      font-size: 11px;
+      font-weight: 700;
+      color: #2F6F47;
+      background: #EBF5EF;
+      padding: 6px 8px;
+      border-radius: 10px;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    /* 错误提示框 */
+    .toast-error {
+      background: #FDE8E8;
+      border: 1px solid #F98080;
+      color: #9B1C1C;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 10px 14px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- 顶部标题 -->
+    <div class="header">
+      <div class="badge-sub">🎨 校园艺术展 · 三人合作拼贴</div>
+      <h1>探险队员随机匹配</h1>
+      <p>3人成团 · 真人优先 · 30秒智能补位</p>
+    </div>
+
+    <!-- 错误通知条 -->
+    <div id="errorToast" class="toast-error"></div>
+
+    <!-- ================= 屏幕 1：信息填写与开始匹配 ================= -->
+    <div id="screenEntry" class="screen active">
+      <div class="form-group">
+        <label class="form-label" for="txtNickname">🌟 你的探险昵称：</label>
+        <input type="text" id="txtNickname" class="form-input" placeholder="输入可爱的代号（例如：彩虹画师）" maxlength="12" />
+        
+        <div class="pills-label">点击快速选择：</div>
+        <div class="pills">
+          <button type="button" class="pill-btn" onclick="selectQuickNick('彩虹小画师')">🦁 彩虹小画师</button>
+          <button type="button" class="pill-btn" onclick="selectQuickNick('探宝小狐狸')">🦊 探宝小狐狸</button>
+          <button type="button" class="pill-btn" onclick="selectQuickNick('智慧小兔')">🐰 智慧小兔</button>
+          <button type="button" class="pill-btn" onclick="selectQuickNick('快乐小熊')">🐻 快乐小熊</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="selClassCode">🏫 你的班级代码：</label>
+        <select id="selClassCode" class="form-select">
+          <option value="1A">一年级 1A 班</option>
+          <option value="1B">一年级 1B 班</option>
+          <option value="1C">一年级 1C 班</option>
+          <option value="1D">一年级 1D 班</option>
+        </select>
+      </div>
+
+      <button type="button" class="btn-primary" onclick="handleStartMatch()">
+        <span>🚀 开始寻找探险队友</span>
+      </button>
+    </div>
+
+    <!-- ================= 屏幕 2：30秒后台等待匹配中 ================= -->
+    <div id="screenWaiting" class="screen">
+      <div class="waiting-box">
+        <div class="radar-circle">🔍</div>
+
+        <div class="timer-wrap">
+          <div class="timer-row">
+            <span>正在匹配同班同学...</span>
+            <span id="lblCountdown">30 秒</span>
+          </div>
+          <div class="progress-track">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+        </div>
+
+        <div class="status-badge">
+          <span>👥</span>
+          <span id="lblWaitingCount">班级等待队伍中已有 1 人</span>
+        </div>
+
+        <p class="waiting-tip">
+          提示：系统优先寻找真人同学。若 30 秒内人数不足，<br>AI 伙伴将自动进组补齐三人，绝不耽误你的探险！
+        </p>
+
+        <button type="button" class="btn-secondary" onclick="handleCancelMatch()">
+          ✕ 退出等待队列
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= 屏幕 3：匹配成功与组员展示 ================= -->
+    <div id="screenSuccess" class="screen">
+      <div class="success-header">
+        <div class="team-badge" id="lblTeamBadge">小队组建成功</div>
+        <h2 style="font-size: 22px; font-weight: 900; color: var(--navy);" id="lblTeamTitle">
+          🎉 恭喜！三人探险小队集合完毕！
+        </h2>
+        <p style="font-size: 12px; color: rgba(38,61,100,0.7); font-weight: 700; margin-top: 4px;">
+          你们已经分配好各自的核心合作职责，准备一起开始创作吧！
+        </p>
+      </div>
+
+      <!-- 三名组员卡片 (1行3列) -->
+      <div class="members-grid" id="membersContainer">
+        <!-- 由 JavaScript 动态渲染三名组员 -->
+      </div>
+
+      <button type="button" class="btn-primary" onclick="handleEnterStudio()">
+        <span>🎨 进入三人艺术工作室</span>
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    // 状态保持 (localStorage 记忆已登录的匿名 ID，支持页面刷新)
+    const STORAGE_KEY = 'gs_lost_art_student';
+    let currentStudentId = localStorage.getItem(STORAGE_KEY) || '';
+    let currentClassCode = '1A';
+    let currentNickname = '';
+    let pollInterval = null;
+
+    // 初始化检查
+    window.addEventListener('DOMContentLoaded', () => {
+      // 检查是否有缓存昵称
+      const cached = localStorage.getItem('gs_student_profile');
+      if (cached) {
+        try {
+          const prof = JSON.parse(cached);
+          if (prof.nickname) document.getElementById('txtNickname').value = prof.nickname;
+          if (prof.classCode) document.getElementById('selClassCode').value = prof.classCode;
+        } catch(e){}
+      }
+    });
+
+    function selectQuickNick(name) {
+      document.getElementById('txtNickname').value = name;
+    }
+
+    function showError(msg) {
+      const toast = document.getElementById('errorToast');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 4000);
+    }
+
+    function switchScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+    }
+
+    // 1. 开始寻找队友
+    function handleStartMatch() {
+      const nick = document.getElementById('txtNickname').value.trim();
+      const cls = document.getElementById('selClassCode').value;
+
+      if (!nick) {
+        showError('请先输入一个可爱的探险昵称哦！');
+        return;
+      }
+
+      currentNickname = nick;
+      currentClassCode = cls;
+      localStorage.setItem('gs_student_profile', JSON.stringify({ nickname: nick, classCode: cls }));
+
+      switchScreen('screenWaiting');
+      updateTimerUI(30);
+
+      // 调用 Google Apps Script 后端加入等待队列
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(onJoinSuccess)
+          .withFailureHandler(onApiError)
+          .apiJoinQueue(nick, cls, currentStudentId);
+      } else {
+        // 本地环境模拟 (供离线调试)
+        console.warn('Google Script 宿主环境未检测到，启动本地模拟演示');
+        simulateLocalMatch();
+      }
+    }
+
+    // 2. 加入队列响应
+    function onJoinSuccess(res) {
+      if (!res.success) {
+        showError(res.error || '加入队列失败，请重试');
+        switchScreen('screenEntry');
+        return;
+      }
+
+      currentStudentId = res.studentId;
+      localStorage.setItem(STORAGE_KEY, currentStudentId);
+
+      if (res.status === 'MATCHED' && res.group) {
+        renderGroup(res.group);
+      } else {
+        // 进入轮询检测
+        updateTimerUI(res.remainingSeconds, res.waitingCount);
+        startPolling();
+      }
+    }
+
+    // 3. 轮询心跳检查
+    function startPolling() {
+      clearInterval(pollInterval);
+      pollInterval = setInterval(() => {
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          google.script.run
+            .withSuccessHandler(onPollSuccess)
+            .withFailureHandler(onApiError)
+            .apiPollMatchStatus(currentStudentId, currentClassCode);
+        }
+      }, 2500); // 每 2.5 秒与后台同步一次真实时间与匹配状态
+    }
+
+    function onPollSuccess(res) {
+      if (!res.success) return;
+
+      if (res.status === 'MATCHED' && res.group) {
+        clearInterval(pollInterval);
+        renderGroup(res.group);
+      } else if (res.status === 'WAITING') {
+        updateTimerUI(res.remainingSeconds, res.waitingCount);
+      } else if (res.status === 'CANCELLED') {
+        clearInterval(pollInterval);
+        switchScreen('screenEntry');
+      }
+    }
+
+    function updateTimerUI(remainingSec, waitingCount) {
+      const rem = Math.max(0, remainingSec || 0);
+      document.getElementById('lblCountdown').innerText = rem + ' 秒';
+      
+      const pct = (rem / 30) * 100;
+      document.getElementById('progressBar').style.width = pct + '%';
+
+      if (waitingCount !== undefined) {
+        document.getElementById('lblWaitingCount').innerText = '当前同班共有 ' + waitingCount + ' 名同学在等待';
+      }
+    }
+
+    // 4. 取消匹配
+    function handleCancelMatch() {
+      clearInterval(pollInterval);
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run.apiCancelQueue(currentStudentId);
+      }
+      switchScreen('screenEntry');
+    }
+
+    // 5. 渲染成团结果
+    function renderGroup(group) {
+      switchScreen('screenSuccess');
+
+      document.getElementById('lblTeamBadge').innerText = group.classCode + ' 班 · 第 ' + (group.groupId.slice(-4)) + ' 小组';
+
+      const container = document.getElementById('membersContainer');
+      container.innerHTML = '';
+
+      group.members.forEach(m => {
+        const isMe = (m.studentId === currentStudentId);
+        const card = document.createElement('div');
+        card.className = 'member-card ' + (m.isAi ? 'is-ai' : '') + ' ' + (isMe ? 'is-me' : '');
+
+        let tagHtml = '';
+        if (isMe) {
+          tagHtml = '<span class="type-tag tag-me">我自己</span>';
+        } else if (m.isAi) {
+          tagHtml = '<span class="type-tag tag-ai">🤖 AI队友</span>';
+        } else {
+          tagHtml = '<span class="type-tag tag-human">真人同学</span>';
+        }
+
+        let aiBubbleHtml = '';
+        if (m.isAi && m.prompt) {
+          aiBubbleHtml = `<div class="ai-bubble">💬 "${m.prompt}"</div>`;
+        }
+
+        card.innerHTML = `
+          ${tagHtml}
+          <div class="member-avatar">${m.avatar || '🦁'}</div>
+          <div class="member-name" title="${m.nickname}">${m.nickname}</div>
+          <div class="member-role">${m.role}</div>
+          ${aiBubbleHtml}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // 6. 前往工作室
+    function handleEnterStudio() {
+      alert('已确认三人小组！准备跳转至 Google Sites 合作画布页面或 Google Slides 协同拼贴！');
+    }
+
+    function onApiError(err) {
+      showError('网络连接稍有迟缓，请稍候... (' + err + ')');
+    }
+
+    // 本地快速预览模拟 (当未在 Apps Script 容器中打开时)
+    function simulateLocalMatch() {
+      let timeLeft = 30;
+      const simTimer = setInterval(() => {
+        timeLeft -= 2;
+        updateTimerUI(timeLeft, 1);
+        if (timeLeft <= 0) {
+          clearInterval(simTimer);
+          renderGroup({
+            groupId: 'GRP_1A_DEMO',
+            classCode: currentClassCode,
+            members: [
+              { studentId: currentStudentId || 'me', nickname: currentNickname || '小狮子画师', role: '聆听员', avatar: '🦁', isAi: false },
+              { studentId: 'ai_pencil', nickname: 'AI小助手·笔宝', role: '记录员', avatar: '✏️', isAi: true, prompt: '别慌，我来做记录员，听到什么用品我就帮你记好！' },
+              { studentId: 'ai_ruler', nickname: 'AI伙伴·尺宝', role: '报告员', avatar: '📏', isAi: true, prompt: '我是报告员，我们一起细心分工，准备展示我们的拼贴画！' }
+            ]
+          });
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

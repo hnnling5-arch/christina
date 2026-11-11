@@ -1,0 +1,154 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Validation for StudentProfile
+    function isValidStudentProfile(data) {
+      return data.keys().hasAll(['anonymousId', 'classCode', 'nickname', 'avatarId', 'mode', 'createdAt'])
+        && data.keys().hasOnly(['anonymousId', 'classCode', 'nickname', 'avatarId', 'mode', 'createdAt'])
+        && data.anonymousId is string && data.anonymousId.size() <= 64
+        && data.classCode is string && data.classCode.size() <= 16
+        && data.nickname is string && data.nickname.size() > 0 && data.nickname.size() <= 32
+        && data.avatarId is string && data.avatarId.size() <= 32
+        && data.mode in ['explorer', 'decoder', 'master'];
+    }
+
+    // Validation for GameProgress
+    function isValidGameProgress(data) {
+      return data.keys().hasAll(['studentId', 'classCode', 'mode', 'currentLevel', 'score', 'completed', 'updatedAt'])
+        && data.studentId is string && data.studentId.size() <= 64
+        && data.classCode is string && data.classCode.size() <= 16
+        && data.mode in ['explorer', 'decoder', 'master']
+        && data.currentLevel is int && data.currentLevel >= 1 && data.currentLevel <= 5
+        && data.score is int && data.score >= 0 && data.score <= 1000
+        && data.completed is bool;
+    }
+
+    // Validation for LeaderboardEntry
+    function isValidLeaderboardEntry(data) {
+      return data.keys().hasAll(['studentId', 'nickname', 'avatarId', 'classCode', 'mode', 'score', 'completed', 'updatedAt'])
+        && data.studentId is string && data.studentId.size() <= 64
+        && data.nickname is string && data.nickname.size() > 0 && data.nickname.size() <= 32
+        && data.avatarId is string && data.avatarId.size() <= 32
+        && data.classCode is string && data.classCode.size() <= 16
+        && data.mode in ['explorer', 'decoder', 'master']
+        && data.score is int && data.score >= 0 && data.score <= 1000
+        && data.completed is bool;
+    }
+
+    // Validation for TeamProject
+    function isValidTeamProject(data) {
+      return data.keys().hasAll(['teamId', 'classCode', 'title', 'members', 'elements', 'status', 'createdAt', 'updatedAt'])
+        && data.teamId is string && data.teamId.size() <= 64
+        && data.classCode is string && data.classCode.size() <= 16
+        && data.title is string && data.title.size() <= 64
+        && data.members is list && data.members.size() <= 5
+        && data.elements is list && data.elements.size() <= 50
+        && data.status in ['draft', 'submitted'];
+    }
+
+    // Students Collection: Anonymous students can read/write their own profile
+    match /students/{studentId} {
+      allow get: if isValidId(studentId) && (isAdmin() || (isSignedIn() && request.auth.uid == studentId));
+      allow list: if isAdmin();
+      allow create: if isValidId(studentId) && isSignedIn() && request.auth.uid == studentId && isValidStudentProfile(incoming());
+      allow update: if isValidId(studentId) && isSignedIn() && request.auth.uid == studentId && isValidStudentProfile(incoming())
+        && incoming().anonymousId == existing().anonymousId;
+      allow delete: if isAdmin();
+    }
+
+    // Game Progress: Student tracks their levels & badges, score tampering forbidden
+    match /progress/{studentId} {
+      allow get: if isValidId(studentId) && (isAdmin() || (isSignedIn() && request.auth.uid == studentId));
+      allow list: if isAdmin();
+      allow create: if isValidId(studentId) && isSignedIn() && request.auth.uid == studentId && isValidGameProgress(incoming());
+      allow update: if isValidId(studentId) && isSignedIn() && request.auth.uid == studentId && isValidGameProgress(incoming())
+        && incoming().studentId == existing().studentId
+        && incoming().mode == existing().mode
+        && incoming().score >= existing().score
+        && incoming().score <= existing().score + 250;
+      allow delete: if isAdmin();
+    }
+
+    // Leaderboards: Anonymous viewable (no PII), student can only write their own document per mode
+    match /leaderboards/{leaderboardId} {
+      allow get: if isValidId(leaderboardId);
+      allow list: if true;
+      allow create: if isValidId(leaderboardId) && isSignedIn() && isValidLeaderboardEntry(incoming())
+        && incoming().studentId == request.auth.uid
+        && leaderboardId == request.auth.uid + '_' + incoming().mode;
+      allow update: if isValidId(leaderboardId) && isSignedIn() && isValidLeaderboardEntry(incoming())
+        && existing().studentId == request.auth.uid
+        && incoming().studentId == request.auth.uid
+        && incoming().mode == existing().mode
+        && incoming().score >= existing().score
+        && incoming().score <= existing().score + 200;
+      allow delete: if isAdmin();
+    }
+
+    // Matchmaking Queue for 3 students
+    match /matchmaking/{queueId} {
+      allow get: if isValidId(queueId);
+      allow list: if isSignedIn();
+      allow create: if isValidId(queueId) && isSignedIn() && incoming().studentId == request.auth.uid;
+      allow update: if isValidId(queueId) && isSignedIn() && (existing().studentId == request.auth.uid || isAdmin());
+      allow delete: if isValidId(queueId) && isSignedIn() && (existing().studentId == request.auth.uid || isAdmin());
+    }
+
+    // Collaborative Team Projects
+    match /teams/{teamId} {
+      allow get: if isValidId(teamId);
+      allow list: if isSignedIn();
+      allow create: if isValidId(teamId) && isSignedIn() && isValidTeamProject(incoming());
+      allow update: if isValidId(teamId) && isSignedIn() && isValidTeamProject(incoming())
+        && incoming().teamId == existing().teamId;
+      allow delete: if isAdmin();
+    }
+
+    // Teacher Evaluations: Only teacher/admin can write, individual student can get their own
+    match /evaluations/{studentId} {
+      allow get: if isValidId(studentId) && (isAdmin() || (isSignedIn() && request.auth.uid == studentId));
+      allow list: if isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // App Settings (Teacher configurable audio / video)
+    match /settings/{settingId} {
+      allow get: if true;
+      allow list: if true;
+      allow write: if isAdmin();
+    }
+
+    // Admins Collection
+    match /admins/{adminId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+  }
+}

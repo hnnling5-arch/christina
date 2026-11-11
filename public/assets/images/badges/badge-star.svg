@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FEF08A" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#FDE047" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#EAB308" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="starBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="30%" stop-color="#FDE047"/>
+      <stop offset="70%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F43F5E"/>
+      <stop offset="100%" stop-color="#BE123C"/>
+    </linearGradient>
+    <filter id="badgeShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#78350F" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Outer Glow -->
+  <circle cx="100" cy="95" r="85" fill="url(#starGlow)"/>
+
+  <!-- Badge Ribbon Tails -->
+  <g filter="url(#badgeShadow)">
+    <path d="M72 135 L55 185 L85 170 L95 185 L90 135 Z" fill="url(#ribbonGrad)" stroke="#9F1239" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M128 135 L145 185 L115 170 L105 185 L110 135 Z" fill="url(#ribbonGrad)" stroke="#9F1239" stroke-width="2.5" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Badge Backing Medallion (Handmade paper collage circle) -->
+  <g filter="url(#badgeShadow)">
+    <circle cx="100" cy="95" r="68" fill="#FEF3C7" stroke="#F59E0B" stroke-width="4.5" stroke-dasharray="1 0"/>
+    <circle cx="100" cy="95" r="58" fill="#FFFBEB" stroke="#FDE68A" stroke-width="3" stroke-dasharray="6 4"/>
+  </g>
+
+  <!-- Whimsical 5-Pointed Shining Star -->
+  <g filter="url(#badgeShadow)">
+    <path d="M100 48 
+             L112 76 
+             L142 78 
+             L119 97 
+             L126 126 
+             L100 110 
+             L74 126 
+             L81 97 
+             L58 78 
+             L88 76 Z" 
+          fill="url(#starBody)" 
+          stroke="#B45309" 
+          stroke-width="3.5" 
+          stroke-linejoin="round"/>
+    
+    <!-- Star Highlights & Facial Charm -->
+    <path d="M100 56 L108 78 L130 80 L113 94 L100 86 Z" fill="#FFFFFF" opacity="0.6"/>
+    <!-- Cute friendly eye dots -->
+    <circle cx="92" cy="88" r="3" fill="#78350F"/>
+    <circle cx="108" cy="88" r="3" fill="#78350F"/>
+    <ellipse cx="90" cy="86" rx="1" ry="1.2" fill="#FFFFFF"/>
+    <ellipse cx="106" cy="86" rx="1" ry="1.2" fill="#FFFFFF"/>
+    <!-- Blushing cheeks -->
+    <circle cx="85" cy="93" r="3.5" fill="#FDA4AF" opacity="0.8"/>
+    <circle cx="115" cy="93" r="3.5" fill="#FDA4AF" opacity="0.8"/>
+    <!-- Happy smile -->
+    <path d="M96 93 Q100 98 104 93" fill="none" stroke="#78350F" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Little sparkle stars around -->
+  <path d="M152 50 Q157 58 165 60 Q157 62 152 70 Q147 62 139 60 Q147 58 152 50 Z" fill="#FBBF24" opacity="0.85"/>
+  <path d="M46 115 Q50 120 56 121 Q50 122 46 127 Q42 122 36 121 Q42 120 46 115 Z" fill="#FBBF24" opacity="0.85"/>
+</svg>

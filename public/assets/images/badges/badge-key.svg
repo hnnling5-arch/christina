@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="keyGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#BBF7D0" stop-opacity="0.85"/>
+      <stop offset="60%" stop-color="#4ADE80" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#16A34A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="goldenKey" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="35%" stop-color="#FCD34D"/>
+      <stop offset="70%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+    <linearGradient id="emeraldRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <filter id="keyShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#064E3B" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Outer Glow -->
+  <circle cx="100" cy="95" r="85" fill="url(#keyGlow)"/>
+
+  <!-- Badge Ribbon Tails -->
+  <g filter="url(#keyShadow)">
+    <path d="M72 135 L55 185 L85 170 L95 185 L90 135 Z" fill="url(#emeraldRibbon)" stroke="#065F46" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M128 135 L145 185 L115 170 L105 185 L110 135 Z" fill="url(#emeraldRibbon)" stroke="#065F46" stroke-width="2.5" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Outer Backing Medallion -->
+  <g filter="url(#keyShadow)">
+    <circle cx="100" cy="95" r="68" fill="#DCFCE7" stroke="#16A34A" stroke-width="4.5"/>
+    <circle cx="100" cy="95" r="58" fill="#F0FDF4" stroke="#86EFAC" stroke-width="2.5" stroke-dasharray="5 3"/>
+  </g>
+
+  <!-- Vintage Exhibition Key with Heart-shaped Bow -->
+  <g filter="url(#keyShadow)">
+    <!-- Ornate Heart Bow -->
+    <path d="M100 62 
+             C94 50 78 50 72 62 
+             C64 76 80 92 100 102 
+             C120 92 136 76 128 62 
+             C122 50 106 50 100 62 Z" 
+          fill="url(#goldenKey)" 
+          stroke="#78350F" 
+          stroke-width="3.5" 
+          stroke-linejoin="round"/>
+
+    <!-- Inside Cutout for Heart Bow -->
+    <path d="M100 68 
+             C96 60 84 60 80 68 
+             C74 78 86 88 100 95 
+             C114 88 126 78 120 68 
+             C116 60 104 60 100 68 Z" 
+          fill="#F0FDF4" 
+          stroke="#92400E" 
+          stroke-width="2"/>
+
+    <!-- Key Shaft -->
+    <rect x="95" y="98" width="10" height="42" rx="3" fill="url(#goldenKey)" stroke="#78350F" stroke-width="3"/>
+
+    <!-- Key Bit (Teeth) with star/cross silhouette -->
+    <path d="M105 122 L118 122 L118 129 L105 129 Z" fill="url(#goldenKey)" stroke="#78350F" stroke-width="2.5"/>
+    <path d="M105 133 L122 133 L122 140 L105 140 Z" fill="url(#goldenKey)" stroke="#78350F" stroke-width="2.5"/>
+
+    <!-- Key Tip Gem -->
+    <circle cx="100" cy="140" r="4.5" fill="#FBBF24" stroke="#78350F" stroke-width="2"/>
+  </g>
+
+  <!-- Sparkles -->
+  <path d="M60 48 Q64 54 70 55 Q64 56 60 62 Q56 56 50 55 Q56 54 60 48 Z" fill="#F59E0B"/>
+  <path d="M148 108 Q152 114 158 115 Q152 116 148 122 Q144 116 138 115 Q144 114 148 108 Z" fill="#F59E0B"/>
+</svg>

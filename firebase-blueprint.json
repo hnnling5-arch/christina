@@ -1,0 +1,340 @@
+{
+  "entities": {
+    "StudentProfile": {
+      "title": "StudentProfile",
+      "description": "Anonymous student session profile without any PII",
+      "type": "object",
+      "properties": {
+        "anonymousId": {
+          "type": "string",
+          "description": "Unique anonymous student identifier",
+          "maxLength": 64,
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "classCode": {
+          "type": "string",
+          "description": "Class code identifier such as 1A or 1B",
+          "maxLength": 16,
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "nickname": {
+          "type": "string",
+          "description": "Safe filtered cartoon nickname",
+          "maxLength": 32
+        },
+        "avatarId": {
+          "type": "string",
+          "description": "Selected avatar identifier",
+          "maxLength": 32
+        },
+        "mode": {
+          "type": "string",
+          "description": "Selected learning mode: explorer, decoder, or master",
+          "enum": ["explorer", "decoder", "master"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Profile creation timestamp"
+        }
+      },
+      "required": ["anonymousId", "classCode", "nickname", "avatarId", "mode", "createdAt"]
+    },
+    "GameProgress": {
+      "title": "GameProgress",
+      "description": "Student progress through the 5 listening and material collection levels",
+      "type": "object",
+      "properties": {
+        "studentId": {
+          "type": "string",
+          "description": "Referenced anonymous student ID",
+          "maxLength": 64
+        },
+        "classCode": {
+          "type": "string",
+          "description": "Class code",
+          "maxLength": 16
+        },
+        "mode": {
+          "type": "string",
+          "description": "Learning mode",
+          "enum": ["explorer", "decoder", "master"]
+        },
+        "currentLevel": {
+          "type": "integer",
+          "description": "Current active level from 1 to 5"
+        },
+        "badges": {
+          "type": "object",
+          "description": "Four collected art material badges: glue, paper, scissors, sticker"
+        },
+        "score": {
+          "type": "integer",
+          "description": "Cumulative listening and task score"
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "Whether all stages and collaborative collage are completed"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        }
+      },
+      "required": ["studentId", "classCode", "mode", "currentLevel", "score", "completed", "updatedAt"]
+    },
+    "LeaderboardEntry": {
+      "title": "LeaderboardEntry",
+      "description": "Anonymous score entry for public leaderboard display",
+      "type": "object",
+      "properties": {
+        "studentId": {
+          "type": "string",
+          "description": "Anonymous student identifier",
+          "maxLength": 64
+        },
+        "nickname": {
+          "type": "string",
+          "description": "Display nickname",
+          "maxLength": 32
+        },
+        "avatarId": {
+          "type": "string",
+          "description": "Avatar key",
+          "maxLength": 32
+        },
+        "classCode": {
+          "type": "string",
+          "description": "Class code",
+          "maxLength": 16
+        },
+        "mode": {
+          "type": "string",
+          "description": "Learning mode",
+          "enum": ["explorer", "decoder", "master"]
+        },
+        "score": {
+          "type": "integer",
+          "description": "Total score"
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "Completion flag"
+        },
+        "badgesCount": {
+          "type": "integer",
+          "description": "Count of collected badges (0-4)"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp"
+        }
+      },
+      "required": ["studentId", "nickname", "avatarId", "classCode", "mode", "score", "completed", "updatedAt"]
+    },
+    "MatchmakingQueue": {
+      "title": "MatchmakingQueue",
+      "description": "Waiting queue entry for 3-player team matching within a class",
+      "type": "object",
+      "properties": {
+        "studentId": {
+          "type": "string",
+          "description": "Student anonymous ID",
+          "maxLength": 64
+        },
+        "classCode": {
+          "type": "string",
+          "description": "Target class",
+          "maxLength": 16
+        },
+        "nickname": {
+          "type": "string",
+          "description": "Student nickname",
+          "maxLength": 32
+        },
+        "avatarId": {
+          "type": "string",
+          "description": "Student avatar",
+          "maxLength": 32
+        },
+        "status": {
+          "type": "string",
+          "description": "Queue status: waiting or matched",
+          "enum": ["waiting", "matched"]
+        },
+        "teamId": {
+          "type": "string",
+          "description": "Assigned team ID if matched",
+          "maxLength": 64
+        },
+        "roleIndex": {
+          "type": "integer",
+          "description": "Role in team (0: paper background, 1: design cutouts, 2: stickers)"
+        },
+        "joinedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Queue entry timestamp"
+        }
+      },
+      "required": ["studentId", "classCode", "nickname", "avatarId", "status", "joinedAt"]
+    },
+    "TeamProject": {
+      "title": "TeamProject",
+      "description": "Three-person collaborative collage artwork",
+      "type": "object",
+      "properties": {
+        "teamId": {
+          "type": "string",
+          "description": "Unique team project ID",
+          "maxLength": 64
+        },
+        "classCode": {
+          "type": "string",
+          "description": "Class code",
+          "maxLength": 16
+        },
+        "title": {
+          "type": "string",
+          "description": "Collage artwork name given by team",
+          "maxLength": 64
+        },
+        "members": {
+          "type": "array",
+          "description": "Array of 3 member profiles"
+        },
+        "collageState": {
+          "type": "object",
+          "description": "Collage elements contributed by members"
+        },
+        "status": {
+          "type": "string",
+          "description": "Draft or submitted",
+          "enum": ["draft", "submitted"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["teamId", "classCode", "title", "members", "collageState", "status", "createdAt", "updatedAt"]
+    },
+    "TeacherEvaluation": {
+      "title": "TeacherEvaluation",
+      "description": "SP 1.2.1 Learning evidence rubric assessment by teacher",
+      "type": "object",
+      "properties": {
+        "studentId": {
+          "type": "string",
+          "description": "Student anonymous ID",
+          "maxLength": 64
+        },
+        "classCode": {
+          "type": "string",
+          "description": "Class code",
+          "maxLength": 16
+        },
+        "quietListening": {
+          "type": "integer",
+          "description": "Quiet listening habit rating (1-5)"
+        },
+        "noteTaking": {
+          "type": "integer",
+          "description": "Listening and recording rating (1-5)"
+        },
+        "reflectiveThinking": {
+          "type": "integer",
+          "description": "Listening and thinking rating (1-5)"
+        },
+        "contentComprehension": {
+          "type": "integer",
+          "description": "Core notice comprehension (1-5)"
+        },
+        "fourMaterials": {
+          "type": "integer",
+          "description": "Key 4 materials recognition (1-5)"
+        },
+        "appropriateResponse": {
+          "type": "integer",
+          "description": "Appropriate response (1-5)"
+        },
+        "oralExpression": {
+          "type": "integer",
+          "description": "Oral communication clarity (1-5)"
+        },
+        "teacherRemarks": {
+          "type": "string",
+          "description": "Qualitative feedback notes",
+          "maxLength": 500
+        },
+        "gradedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Grading timestamp"
+        }
+      },
+      "required": ["studentId", "classCode", "quietListening", "noteTaking", "reflectiveThinking", "contentComprehension", "fourMaterials", "appropriateResponse", "oralExpression", "gradedAt"]
+    },
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Teacher controllable audio source and YouTube video URL",
+      "type": "object",
+      "properties": {
+        "audioNoticeText": {
+          "type": "string",
+          "description": "The exact SP 1.2.1 teacher notice text",
+          "maxLength": 200
+        },
+        "youtubeVideoUrl": {
+          "type": "string",
+          "description": "Child collage educational tutorial YouTube video ID or URL",
+          "maxLength": 200
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Settings update timestamp"
+        }
+      },
+      "required": ["audioNoticeText", "youtubeVideoUrl", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": "StudentProfile",
+      "description": "Anonymous student profile documents"
+    },
+    "/progress/{studentId}": {
+      "schema": "GameProgress",
+      "description": "Student game stage and badges progress"
+    },
+    "/leaderboards/{leaderboardId}": {
+      "schema": "LeaderboardEntry",
+      "description": "Leaderboard records indexed by mode and score"
+    },
+    "/matchmaking/{queueId}": {
+      "schema": "MatchmakingQueue",
+      "description": "Waiting queue for 3-player team matching"
+    },
+    "/teams/{teamId}": {
+      "schema": "TeamProject",
+      "description": "Collaborative collage projects"
+    },
+    "/evaluations/{studentId}": {
+      "schema": "TeacherEvaluation",
+      "description": "Teacher rubric evaluations for learning evidence"
+    },
+    "/settings/global": {
+      "schema": "AppSettings",
+      "description": "Global teacher configurable media settings"
+    }
+  }
+}

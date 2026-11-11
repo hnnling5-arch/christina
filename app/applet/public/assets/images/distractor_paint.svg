@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <!-- Storybook Wooden Paint Palette -->
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="3" dy="5" stdDeviation="4" flood-color="#263D64" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <!-- Palette Board -->
+    <path d="M120 180 C80 240 70 330 130 390 C190 450 310 440 370 390 C420 350 440 280 410 210 C380 140 300 90 220 110 C160 125 140 150 120 180 Z" 
+          fill="#FDE6B8" stroke="#D4A373" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Thumb hole -->
+    <ellipse cx="340" cy="310" rx="25" ry="32" fill="#FFFFFF" stroke="#D4A373" stroke-width="10"/>
+
+    <!-- 6 Vibrant Paint Blobs -->
+    <!-- Cyan -->
+    <ellipse cx="160" cy="190" rx="24" ry="22" fill="#0EA5E9" stroke="#0284C7" stroke-width="6"/>
+    <!-- Yellow -->
+    <ellipse cx="220" cy="160" rx="26" ry="24" fill="#FACC15" stroke="#EAB308" stroke-width="6"/>
+    <!-- Red -->
+    <ellipse cx="290" cy="165" rx="25" ry="23" fill="#EF4444" stroke="#DC2626" stroke-width="6"/>
+    <!-- Purple -->
+    <ellipse cx="350" cy="200" rx="24" ry="22" fill="#A855F7" stroke="#9333EA" stroke-width="6"/>
+    <!-- Green -->
+    <ellipse cx="140" cy="270" rx="25" ry="24" fill="#22C55E" stroke="#16A34A" stroke-width="6"/>
+    <!-- Orange -->
+    <ellipse cx="165" cy="345" rx="24" ry="22" fill="#F97316" stroke="#EA580C" stroke-width="6"/>
+
+    <!-- Wooden Paintbrush with blue dipped tip resting on palette -->
+    <g transform="rotate(-35 250 250)">
+      <!-- Brush handle -->
+      <path d="M230 40 L250 40 L245 340 L235 340 Z" fill="#D97706" stroke="#B45309" stroke-width="7"/>
+      <!-- Ferrule (metal band) -->
+      <rect x="233" y="340" width="14" height="35" rx="3" fill="#94A3B8" stroke="#64748B" stroke-width="5"/>
+      <!-- Bristles with wet paint -->
+      <path d="M233 375 C233 420 240 435 240 435 C240 435 247 420 247 375 Z" fill="#0284C7" stroke="#0369A1" stroke-width="6"/>
+    </g>
+  </g>
+</svg>

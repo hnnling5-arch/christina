@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="frameGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#BAE6FD" stop-opacity="0.8"/>
+      <stop offset="70%" stop-color="#7DD3FC" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="woodFrame" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="30%" stop-color="#F59E0B"/>
+      <stop offset="70%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#92400E"/>
+    </linearGradient>
+    <linearGradient id="canvasGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EFF6FF"/>
+      <stop offset="50%" stop-color="#DBEAFE"/>
+      <stop offset="100%" stop-color="#BFDBFE"/>
+    </linearGradient>
+    <linearGradient id="frameRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#0369A1"/>
+    </linearGradient>
+    <filter id="frameShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#1E3A8A" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Glow -->
+  <circle cx="100" cy="95" r="85" fill="url(#frameGlow)"/>
+
+  <!-- Badge Ribbon Tails -->
+  <g filter="url(#frameShadow)">
+    <path d="M72 135 L55 185 L85 170 L95 185 L90 135 Z" fill="url(#frameRibbon)" stroke="#075985" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M128 135 L145 185 L115 170 L105 185 L110 135 Z" fill="url(#frameRibbon)" stroke="#075985" stroke-width="2.5" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Outer Backing Medallion -->
+  <g filter="url(#frameShadow)">
+    <circle cx="100" cy="95" r="68" fill="#E0F2FE" stroke="#0284C7" stroke-width="4.5"/>
+    <circle cx="100" cy="95" r="58" fill="#F0F9FF" stroke="#38BDF8" stroke-width="2.5" stroke-dasharray="5 3"/>
+  </g>
+
+  <!-- Ornate Golden Picture Frame -->
+  <g filter="url(#frameShadow)">
+    <!-- Frame Outer Border -->
+    <rect x="58" y="55" width="84" height="78" rx="14" fill="url(#woodFrame)" stroke="#78350F" stroke-width="3.5"/>
+    <!-- Ornate corner rosettes -->
+    <circle cx="64" cy="61" r="5" fill="#FEF08A" stroke="#B45309" stroke-width="2"/>
+    <circle cx="136" cy="61" r="5" fill="#FEF08A" stroke="#B45309" stroke-width="2"/>
+    <circle cx="64" cy="127" r="5" fill="#FEF08A" stroke="#B45309" stroke-width="2"/>
+    <circle cx="136" cy="127" r="5" fill="#FEF08A" stroke="#B45309" stroke-width="2"/>
+
+    <!-- Inside Canvas -->
+    <rect x="70" y="67" width="60" height="54" rx="8" fill="url(#canvasGrad)" stroke="#B45309" stroke-width="2"/>
+    
+    <!-- Artwork on canvas: Sunset landscape with mountain and sun in watercolor -->
+    <circle cx="100" cy="84" r="10" fill="#FBBF24" opacity="0.9"/>
+    <!-- Mountains -->
+    <path d="M72 119 L88 95 L102 110 L118 90 L128 119 Z" fill="#34D399" opacity="0.8" stroke="#059669" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M84 119 L98 102 L112 119 Z" fill="#6EE7B7" opacity="0.9"/>
+  </g>
+
+  <!-- Sparkles -->
+  <path d="M150 48 Q154 55 160 56 Q154 58 150 64 Q146 58 140 56 Q146 55 150 48 Z" fill="#38BDF8"/>
+</svg>

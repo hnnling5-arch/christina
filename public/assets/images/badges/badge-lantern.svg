@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="lanternGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FED7AA" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#FB923C" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#EA580C" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lanternGlass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="40%" stop-color="#FEF08A"/>
+      <stop offset="80%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="lanternMetal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="50%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#78350F"/>
+    </linearGradient>
+    <linearGradient id="purpleRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#6D28D9"/>
+    </linearGradient>
+    <filter id="lanternShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#4C1D95" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Outer Glow -->
+  <circle cx="100" cy="95" r="85" fill="url(#lanternGlow)"/>
+
+  <!-- Badge Ribbon Tails -->
+  <g filter="url(#lanternShadow)">
+    <path d="M72 135 L55 185 L85 170 L95 185 L90 135 Z" fill="url(#purpleRibbon)" stroke="#4C1D95" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M128 135 L145 185 L115 170 L105 185 L110 135 Z" fill="url(#purpleRibbon)" stroke="#4C1D95" stroke-width="2.5" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Outer Backing Medallion -->
+  <g filter="url(#lanternShadow)">
+    <circle cx="100" cy="95" r="68" fill="#EDE9FE" stroke="#8B5CF6" stroke-width="4.5"/>
+    <circle cx="100" cy="95" r="58" fill="#FAF5FF" stroke="#C4B5FD" stroke-width="2.5" stroke-dasharray="5 3"/>
+  </g>
+
+  <!-- Magic Glowing Paper Lantern -->
+  <g filter="url(#lanternShadow)">
+    <!-- Lantern Top Hook & Cap -->
+    <path d="M100 45 C94 45 90 49 90 55 C90 58 92 60 95 62 L105 62 C108 60 110 58 110 55 C110 49 106 45 100 45 Z" fill="none" stroke="#B45309" stroke-width="3.5" stroke-linecap="round"/>
+    <rect x="80" y="60" width="40" height="9" rx="4" fill="url(#lanternMetal)" stroke="#78350F" stroke-width="2.5"/>
+
+    <!-- Lantern Glowing Body -->
+    <path d="M84 69 C70 85 70 110 84 125 L116 125 C130 110 130 85 116 69 Z" fill="url(#lanternGlass)" stroke="#B45309" stroke-width="3"/>
+
+    <!-- Lantern Bottom Cap & Tassel -->
+    <rect x="85" y="125" width="30" height="7" rx="3" fill="url(#lanternMetal)" stroke="#78350F" stroke-width="2.2"/>
+    <path d="M100 132 L100 148" stroke="#D97706" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="100" cy="149" r="3.5" fill="#EF4444"/>
+
+    <!-- Inner Magic Sound Note / Light Spark inside lantern -->
+    <circle cx="100" cy="97" r="14" fill="#FFFFFF" opacity="0.8"/>
+    <!-- Note shape -->
+    <path d="M96 102 C96 104 94 106 91 106 C88 106 86 104 86 102 C86 99 88 97 91 97 C93 97 94 98 95 99 L95 88 L106 85 L106 97 C106 99 104 101 101 101 C98 101 96 99 96 97 Z" fill="#D97706"/>
+  </g>
+
+  <!-- Surrounding Magic Stars -->
+  <path d="M152 68 Q156 74 162 75 Q156 76 152 82 Q148 76 142 75 Q148 74 152 68 Z" fill="#F59E0B"/>
+  <path d="M46 72 Q50 78 56 79 Q50 80 46 86 Q42 80 36 79 Q42 78 46 72 Z" fill="#F59E0B"/>
+</svg>
